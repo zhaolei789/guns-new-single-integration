@@ -1,0 +1,72 @@
+package cn.stylefeng.guns.modular.demo.service.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.guns.core.exception.BusinessException;
+import cn.stylefeng.guns.modular.demo.entity.CarEntity;
+import cn.stylefeng.guns.modular.demo.mapper.CarMapper;
+import cn.stylefeng.guns.modular.demo.model.Enum.CarExceptionEnum;
+import cn.stylefeng.guns.modular.demo.model.in.CarRequest;
+import cn.stylefeng.guns.modular.demo.service.CarService;
+import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
+import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
+import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+@Service
+public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements CarService {
+    @Override
+    public List<CarEntity> findCarList(CarRequest carRequest) {
+        LambdaQueryWrapper<CarEntity> queryWrapper = this.queryList(carRequest);
+        return this.list(queryWrapper);
+    }
+
+    @Override
+    public PageResult<CarEntity> findListByPage(CarRequest carRequest) {
+        LambdaQueryWrapper<CarEntity> queryWrapper = new LambdaQueryWrapper<>();
+        Page<CarEntity> page  = this.page(PageFactory.defaultPage(), queryWrapper);
+        PageResult<CarEntity> pageResult = PageResultFactory.createPageResult(page);
+        return pageResult;
+    }
+
+    @Override
+    public boolean add(CarRequest carRequest) {
+        CarEntity carEntity = new CarEntity();
+        BeanUtil.copyProperties(carRequest, carEntity);
+        this.save(carEntity);
+        return true;
+    }
+
+    @Override
+    public void edit(CarRequest carRequest) {
+        CarEntity carEntity = this.queryCar(carRequest);
+        BeanUtil.copyProperties(carRequest, carEntity);
+        this.updateById(carEntity);
+    }
+
+    @Override
+    public boolean del(CarRequest carRequest) {
+        CarEntity carEntity = this.queryCar(carRequest);
+        boolean delFlag = this.removeById(carEntity.getCarId());
+        return delFlag;
+    }
+
+    private CarEntity queryCar(CarRequest carRequest){
+        CarEntity carEntity = this.getById(carRequest.getCarId());
+        if (BeanUtil.isEmpty(carEntity)){
+            throw new BusinessException(CarExceptionEnum.CAR_NOT_EXISTED);
+        }
+        return carEntity;
+    }
+
+    private LambdaQueryWrapper<CarEntity> queryList(CarRequest carRequest){
+        LambdaQueryWrapper<CarEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName());
+        queryWrapper.orderByDesc(CarEntity::getCarName);
+        return queryWrapper;
+    }
+}
