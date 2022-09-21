@@ -25,7 +25,7 @@ public class CarController {
     @Resource
     private CarService carService;
 
-    @GetResource(name = "车辆管理-所有车辆列表", path = "/car/findList")
+    @GetResource(name = "车辆管理-所有车辆列表", path = "/car/findList", requiredLogin = false, requiredPermission = false)
     public ResponseData<List<CarEntity>> list(CarRequest carRequest){
         return new SuccessResponseData<>(carService.findCarList(carRequest));
     }
@@ -47,7 +47,7 @@ public class CarController {
         return new SuccessResponseData<>();
     }
 
-    @GetResource(name = "车辆管理-删除", path = "/car/delCar")
+    @PostResource(name = "车辆管理-删除", path = "/car/delCar")
     public ResponseData<Boolean> del(@RequestBody @Validated(BaseRequest.delete.class) CarRequest carRequest){
         boolean del = carService.del(carRequest);
         return new SuccessResponseData<>();

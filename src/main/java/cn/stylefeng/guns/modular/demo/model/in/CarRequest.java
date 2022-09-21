@@ -1,11 +1,13 @@
 package cn.stylefeng.guns.modular.demo.model.in;
 
+import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -19,6 +21,7 @@ public class CarRequest extends BaseRequest {
      * 车辆名称
      */
     @NotBlank(message = "车辆名称不能为空！", groups = {add.class, edit.class})
+    @ChineseDescription("车辆名称")
     private String carName;
 
     /**
@@ -26,4 +29,13 @@ public class CarRequest extends BaseRequest {
      */
     @NotNull(message = "车辆类型不能为空！", groups = {add.class, edit.class})
     private Integer carType;
+
+    @NotBlank(message = "车辆颜色不能为空！", groups = {add.class, edit.class})
+    private String carColor;
+
+    @NotNull(message = "车辆价格不能为空！", groups = {add.class, edit.class})
+    private BigDecimal carPrice;
+
+    @NotBlank(message = "制造商不能为空！", groups = {add.class, edit.class})
+    private String manufacturer;
 }

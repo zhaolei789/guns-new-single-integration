@@ -8,6 +8,7 @@ import cn.stylefeng.guns.modular.demo.mapper.CarMapper;
 import cn.stylefeng.guns.modular.demo.model.Enum.CarExceptionEnum;
 import cn.stylefeng.guns.modular.demo.model.in.CarRequest;
 import cn.stylefeng.guns.modular.demo.service.CarService;
+import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
@@ -15,6 +16,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 
 import java.util.List;
 @Service
@@ -22,6 +25,8 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
     @Override
     public List<CarEntity> findCarList(CarRequest carRequest) {
         LambdaQueryWrapper<CarEntity> queryWrapper = this.queryList(carRequest);
+        LoginUser loginUser = LoginContext.me().getLoginUser();
+        log.debug("---" + loginUser.getUserId());
         return this.list(queryWrapper);
     }
 
@@ -49,6 +54,7 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean del(CarRequest carRequest) {
         CarEntity carEntity = this.queryCar(carRequest);
         boolean delFlag = this.removeById(carEntity.getCarId());
