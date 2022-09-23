@@ -1,7 +1,9 @@
 package cn.stylefeng.guns.modular.demo.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.stylefeng.guns.core.exception.BusinessException;
 import cn.stylefeng.guns.modular.demo.entity.CarEntity;
 import cn.stylefeng.guns.modular.demo.mapper.CarMapper;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 
+import java.util.Iterator;
 import java.util.List;
 @Service
 public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements CarService {
@@ -33,6 +36,7 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
     @Override
     public PageResult<CarEntity> findListByPage(CarRequest carRequest) {
         LambdaQueryWrapper<CarEntity> queryWrapper = new LambdaQueryWrapper<>();
+//        queryWrapper.and(wapper->wapper.like())
         Page<CarEntity> page  = this.page(PageFactory.defaultPage(), queryWrapper);
         PageResult<CarEntity> pageResult = PageResultFactory.createPageResult(page);
         return pageResult;
@@ -42,6 +46,7 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
     public boolean add(CarRequest carRequest) {
         CarEntity carEntity = new CarEntity();
         BeanUtil.copyProperties(carRequest, carEntity);
+        carEntity.setCarId(RandomUtil.randomLong(1000000000000000000L, 9000000000000000001L));
         this.save(carEntity);
         return true;
     }
@@ -59,6 +64,19 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         CarEntity carEntity = this.queryCar(carRequest);
         boolean delFlag = this.removeById(carEntity.getCarId());
         return delFlag;
+    }
+
+    @Override
+    public void batchDelete(CarRequest carRequest) {
+        List<Long> carIds = carRequest.getCarIds();
+        Iterator<Long> var3 = carIds.iterator();
+
+        while (var3.hasNext()) {
+            Long carId = (Long) var3.next();
+            CarRequest tempCarReq = new CarRequest();
+            tempCarReq.setCarId(carId);
+            this.del(tempCarReq);
+        }
     }
 
     private CarEntity queryCar(CarRequest carRequest){

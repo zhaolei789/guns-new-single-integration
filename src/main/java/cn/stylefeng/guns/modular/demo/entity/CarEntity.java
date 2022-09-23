@@ -29,7 +29,7 @@ public class CarEntity extends BaseEntity {
      * 车辆类型：1，轿车  2，货车
      */
     @TableField("car_type")
-    private Integer carType;
+        private Integer carType;
 
     /**
      * 车辆颜色
