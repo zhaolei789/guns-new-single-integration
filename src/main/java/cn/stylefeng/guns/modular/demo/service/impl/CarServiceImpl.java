@@ -79,6 +79,15 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         }
     }
 
+    @Override
+    public CarEntity carDetail(CarRequest carRequest) {
+        CarEntity car = this.getById(carRequest.getCarId());
+        if (BeanUtil.isEmpty(car)){
+            throw new BusinessException(CarExceptionEnum.CAR_NOT_EXISTED);
+        }
+        return car;
+    }
+
     private CarEntity queryCar(CarRequest carRequest){
         CarEntity carEntity = this.getById(carRequest.getCarId());
         if (BeanUtil.isEmpty(carEntity)){

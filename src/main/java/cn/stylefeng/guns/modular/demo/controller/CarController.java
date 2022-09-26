@@ -4,6 +4,9 @@ import cn.stylefeng.guns.modular.demo.entity.CarEntity;
 import cn.stylefeng.guns.modular.demo.model.in.CarRequest;
 import cn.stylefeng.guns.modular.demo.service.CarService;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import cn.stylefeng.roses.kernel.dict.modular.entity.SysDict;
+import cn.stylefeng.roses.kernel.dict.modular.pojo.request.DictRequest;
+import cn.stylefeng.roses.kernel.dict.modular.service.DictService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
@@ -25,6 +28,8 @@ public class CarController {
 
     @Resource
     private CarService carService;
+    @Resource
+    private DictService dictService;
 
     @GetResource(name = "车辆管理-所有车辆列表", path = "/car/findList", requiredLogin = false, requiredPermission = false)
     @BusinessLog
@@ -67,5 +72,25 @@ public class CarController {
     public ResponseData<?> batchDelete(@RequestBody @Validated({BaseRequest.batchDelete.class}) CarRequest carRequest){
         this.carService.batchDelete(carRequest);
         return new SuccessResponseData<>();
+    }
+
+    @GetResource(
+            name = "获取系统配置分组字典列表",
+            path = {"/car/getCarGroupDict"}
+    )
+    public ResponseData<PageResult<SysDict>> getCarGroupDict(DictRequest dictRequest) {
+        dictRequest.setDictTypeCode("car_type");
+        PageResult<SysDict> page = this.dictService.findPage(dictRequest);
+        return new SuccessResponseData<>(page);
+    }
+
+    @GetResource(
+            name = "查看车辆详情信息",
+            path = {"/car/detail"}
+    )
+    @BusinessLog
+    public ResponseData<?> detail(CarRequest carRequest){
+        CarEntity car = this.carService.carDetail(carRequest);
+        return new SuccessResponseData<>(car);
     }
 }

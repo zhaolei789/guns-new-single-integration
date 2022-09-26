@@ -39,4 +39,6 @@ public interface CarService extends IService<CarEntity> {
     boolean del(CarRequest carRequest);
 
     void batchDelete(CarRequest carRequest);
+
+    CarEntity carDetail(CarRequest carRequest);
 }
