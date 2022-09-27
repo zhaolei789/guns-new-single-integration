@@ -84,12 +84,12 @@ public class CarController {
         return new SuccessResponseData<>(page);
     }
 
-    @GetResource(
+    @PostResource(
             name = "查看车辆详情信息",
             path = {"/car/detail"}
     )
     @BusinessLog
-    public ResponseData<?> detail(CarRequest carRequest){
+    public ResponseData<?> detail(@RequestBody CarRequest carRequest){
         CarEntity car = this.carService.carDetail(carRequest);
         return new SuccessResponseData<>(car);
     }

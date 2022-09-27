@@ -1,13 +1,7 @@
 package cn.stylefeng.guns.modular.demo.controller;
 
-import cn.stylefeng.guns.modular.demo.entity.CarEntity;
 import cn.stylefeng.guns.modular.demo.model.in.CarManuRequest;
-import cn.stylefeng.guns.modular.demo.model.in.CarRequest;
 import cn.stylefeng.guns.modular.demo.service.CarManuService;
-import cn.stylefeng.guns.modular.demo.service.CarService;
-import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
-import cn.stylefeng.roses.kernel.dict.modular.entity.SysDict;
-import cn.stylefeng.roses.kernel.dict.modular.pojo.request.DictRequest;
 import cn.stylefeng.roses.kernel.dict.modular.service.DictService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
@@ -22,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @RestController
@@ -51,22 +44,42 @@ public class CarManuController {
 
     @PostResource(name = "车辆厂家管理-新增", path = "/menu/add")
     @BusinessLog
-    public ResponseData<?> add(CarManuRequest carManuRequest){
+    public ResponseData<?> add(@RequestBody @Validated(BaseRequest.add.class) CarManuRequest carManuRequest){
         carManuService.add(carManuRequest);
         return new SuccessResponseData<>();
     }
 
     @PostResource(name = "车辆厂家管理-修改", path = "/menu/edit")
     @BusinessLog
-    public ResponseData<?> edit(CarManuRequest carManuRequest){
+    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) CarManuRequest carManuRequest){
         carManuService.edit(carManuRequest);
         return new SuccessResponseData<>();
     }
 
     @PostResource(name = "车辆厂家管理-删除", path = "/menu/del")
     @BusinessLog
-    public ResponseData<?> remove(CarManuRequest carManuRequest){
+    public ResponseData<?> remove(@RequestBody @Validated(BaseRequest.delete.class) CarManuRequest carManuRequest){
         boolean del = carManuService.del(carManuRequest);
         return del? new SuccessResponseData<>() : new ErrorResponseData<>("err", "err");
+    }
+
+    @PostResource(
+            name = "批量删除车辆厂商信息",
+            path = {"/menu/batchDelete"}
+    )
+    @BusinessLog
+    public ResponseData<?> batchDelete(@RequestBody @Validated({BaseRequest.batchDelete.class}) CarManuRequest carManuRequest) {
+        this.carManuService.batchDelete(carManuRequest);
+        return new SuccessResponseData<>();
+    }
+
+    @PostResource(
+            name = "更改厂商状态",
+            path = {"/menu/editStatus"}
+    )
+    @BusinessLog
+    public ResponseData<?> editStatus(@RequestBody @Validated({BaseRequest.updateStatus.class}) CarManuRequest carManuRequest){
+        this.carManuService.editStat(carManuRequest);
+        return new SuccessResponseData<>();
     }
 }

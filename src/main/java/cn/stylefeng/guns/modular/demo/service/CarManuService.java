@@ -41,4 +41,7 @@ public interface CarManuService extends IService<CarManuEntity> {
     void batchDelete(CarManuRequest carManuRequest);
 
     CarManuEntity carDetail(CarManuRequest carManuRequest);
+
+    void editStat(CarManuRequest carManuRequest);
+
 }

@@ -1,18 +1,17 @@
 package cn.stylefeng.guns.modular.demo.model.in;
 
-import cn.stylefeng.roses.kernel.db.api.pojo.entity.BaseEntity;
+import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CarManuRequest extends BaseEntity {
+public class CarManuRequest extends BaseRequest {
     /**
      * 车辆id
      */
@@ -33,13 +32,23 @@ public class CarManuRequest extends BaseEntity {
     /**
      * 车辆颜色
      */
-    @NotBlank(message = "厂商所属国际不能为空！", groups = {BaseRequest.add.class, BaseRequest.edit.class})
+    @NotBlank(message = "厂商所属颜色不能为空！", groups = {BaseRequest.add.class, BaseRequest.edit.class})
     private String manuCountry;
+
+    @NotNull(message = "状态不能为空", groups = {add.class, edit.class})
+    @ChineseDescription("状态")
+    private Integer statusFlag;
 
     /**
      * 车辆价格
      */
-    private Integer is_delete;
+    private Integer isDelete;
+
+    @ChineseDescription("厂商id集合（用在批量操作）")
+    private @NotNull(
+            message = "厂商id集合不能为空",
+            groups = {BaseRequest.batchDelete.class}
+    ) List<Long> manuIds;
 
 
 }

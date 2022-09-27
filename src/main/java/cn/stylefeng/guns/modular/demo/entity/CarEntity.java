@@ -49,4 +49,6 @@ public class CarEntity extends BaseEntity {
     @TableField("manufacturer")
     private String manufacturer;
 
+
+
 }

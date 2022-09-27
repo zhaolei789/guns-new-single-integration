@@ -53,6 +53,7 @@ public class CarRequest extends BaseRequest {
     @NotBlank(message = "制造商不能为空！", groups = {add.class, edit.class})
     private String manufacturer;
 
+
     /**
      * 车辆id集合
      */

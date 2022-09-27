@@ -1,7 +1,6 @@
 package cn.stylefeng.guns.modular.demo.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.stylefeng.guns.core.exception.BusinessException;
@@ -17,6 +16,8 @@ import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gettyio.core.util.StringUtil;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
@@ -30,6 +31,13 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         LambdaQueryWrapper<CarEntity> queryWrapper = this.queryList(carRequest);
         LoginUser loginUser = LoginContext.me().getLoginUser();
         log.debug("---" + loginUser.getUserId());
+//        queryWrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName());
+//        queryWrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarColor()), CarEntity::getCarColor, carRequest.getCarColor());
+        queryWrapper.and(
+                wrapper ->
+                        wrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName())
+                                .eq(ObjectUtil.isNotEmpty(carRequest.getCarColor()), CarEntity::getCarColor, carRequest.getCarColor())
+        );
         return this.list(queryWrapper);
     }
 
@@ -37,7 +45,7 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
     public PageResult<CarEntity> findListByPage(CarRequest carRequest) {
         LambdaQueryWrapper<CarEntity> queryWrapper = new LambdaQueryWrapper<>();
 //        queryWrapper.and(wapper->wapper.like())
-        Page<CarEntity> page  = this.page(PageFactory.defaultPage(), queryWrapper);
+        Page<CarEntity> page  = this.page(PageFactory.defaultPage(), this.queryList(carRequest));
         PageResult<CarEntity> pageResult = PageResultFactory.createPageResult(page);
         return pageResult;
     }

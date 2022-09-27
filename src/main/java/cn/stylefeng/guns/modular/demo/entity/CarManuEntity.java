@@ -42,5 +42,9 @@ public class CarManuEntity extends BaseEntity {
     @TableField("is_delete")
     private Integer isDelete;
 
-
+    /**
+     * 状态
+     */
+    @TableField("status_flag")
+    private Integer statusFlag;
 }
