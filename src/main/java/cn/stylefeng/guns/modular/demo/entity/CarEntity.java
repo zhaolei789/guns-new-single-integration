@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.demo.entity;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -49,6 +50,13 @@ public class CarEntity extends BaseEntity {
     @TableField("manufacturer")
     private String manufacturer;
 
-
+    /**
+     * 删除标识
+     */
+    @TableField(
+            value = "del_flag",
+            fill = FieldFill.INSERT
+    )
+    private String delFlag;
 
 }

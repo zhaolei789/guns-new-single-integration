@@ -2,7 +2,9 @@ package cn.stylefeng.guns.modular.demo.service;
 
 import cn.stylefeng.guns.modular.demo.entity.CarManuEntity;
 import cn.stylefeng.guns.modular.demo.model.in.CarManuRequest;
+import cn.stylefeng.guns.modular.demo.model.out.CarManuResponse;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public interface CarManuService extends IService<CarManuEntity> {
      * @param carManuRequest
      * @return
      */
-    PageResult<CarManuEntity> findListByPage(CarManuRequest carManuRequest);
+    PageResult<CarManuResponse> findListByPage(CarManuRequest carManuRequest);
 
     /**
      * 车辆管理-新增
@@ -43,5 +45,7 @@ public interface CarManuService extends IService<CarManuEntity> {
     CarManuEntity carDetail(CarManuRequest carManuRequest);
 
     void editStat(CarManuRequest carManuRequest);
+
+    CarManuResponse detail(CarManuRequest carManuRequest);
 
 }

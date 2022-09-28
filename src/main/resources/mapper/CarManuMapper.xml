@@ -3,4 +3,21 @@
 <mapper namespace="cn.stylefeng.guns.modular.demo.mapper.CarManuMapper">
 
 
+    <select id="detail" parameterType="java.lang.Long" resultType="cn.stylefeng.guns.modular.demo.model.out.CarManuResponse">
+        SELECT
+            t1.manu_name,
+            t1.manu_addr,
+            t1.manu_country,
+            COUNT( t2.manu_id ) num
+        FROM
+            car_manu t1
+                LEFT JOIN car t2 ON t1.manu_id = t2.manu_id
+        WHERE
+            t1.manu_id = #{manuId}
+        AND t1.is_delete = 0
+        GROUP BY
+            t1.manu_name,
+            t1.manu_addr,
+            t1.manu_country
+    </select>
 </mapper>

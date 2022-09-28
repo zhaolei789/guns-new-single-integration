@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.stylefeng.guns.modular.demo.mapper.CarManuMapper">
+
+
+    <select id="detail" parameterType="java.lang.Long" resultType="cn.stylefeng.guns.modular.demo.model.out.CarManuResponse">
+        SELECT
+            t1.manu_name,
+            t1.manu_addr,
+            t1.manu_country,
+            t1.status_flag,
+            COUNT( t2.manu_id ) num
+        FROM
+            car_manu t1
+                LEFT JOIN car t2 ON t1.manu_id = t2.manu_id
+        WHERE
+            t1.manu_id = #{manuId}
+        AND t1.is_delete = 0
+        GROUP BY
+            t1.manu_name,
+            t1.manu_addr,
+            t1.manu_country
+    </select>
+
+    <select id="findListByPage" parameterType="cn.stylefeng.guns.modular.demo.model.in.CarManuRequest" resultType="cn.stylefeng.guns.modular.demo.model.out.CarManuResponse">
+        SELECT
+            t1.manu_id,
+            t1.manu_name,
+            t1.manu_addr,
+            t1.manu_country,
+            t1.status_flag,
+            COUNT( t2.manu_id ) num
+        FROM
+            car_manu t1
+                LEFT JOIN car t2 ON t1.manu_id = t2.manu_id
+        <where>
+            t1.is_delete = 0
+            <if test="param.manuName != null and param.manuName != ''">
+                and t1.manu_name = #{param.manuName}
+            </if>
+        </where>
+        GROUP BY
+            t1.manu_name,
+            t1.manu_addr,
+            t1.manu_country
+        order by
+            t1.create_time desc
+    </select>
+</mapper>

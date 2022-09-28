@@ -53,6 +53,8 @@ public class CarRequest extends BaseRequest {
     @NotBlank(message = "制造商不能为空！", groups = {add.class, edit.class})
     private String manufacturer;
 
+    @ChineseDescription("删除标识")
+    private String delFlag;
 
     /**
      * 车辆id集合

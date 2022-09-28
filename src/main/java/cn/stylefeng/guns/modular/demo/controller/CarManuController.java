@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.demo.controller;
 
 import cn.stylefeng.guns.modular.demo.model.in.CarManuRequest;
+import cn.stylefeng.guns.modular.demo.model.out.CarManuResponse;
 import cn.stylefeng.guns.modular.demo.service.CarManuService;
 import cn.stylefeng.roses.kernel.dict.modular.service.DictService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
@@ -11,6 +12,7 @@ import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,5 +83,15 @@ public class CarManuController {
     public ResponseData<?> editStatus(@RequestBody @Validated({BaseRequest.updateStatus.class}) CarManuRequest carManuRequest){
         this.carManuService.editStat(carManuRequest);
         return new SuccessResponseData<>();
+    }
+
+    @PostResource(
+            name = "详情",
+            path = {"/menu/detail"}
+    )
+    @BusinessLog
+    public ResponseData<?> detail(@RequestBody CarManuRequest carManuRequest){
+        CarManuResponse detail = this.carManuService.detail(carManuRequest);
+        return new SuccessResponseData<>(detail);
     }
 }

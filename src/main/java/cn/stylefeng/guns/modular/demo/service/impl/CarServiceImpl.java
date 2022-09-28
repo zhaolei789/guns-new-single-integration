@@ -7,6 +7,7 @@ import cn.stylefeng.guns.core.exception.BusinessException;
 import cn.stylefeng.guns.modular.demo.entity.CarEntity;
 import cn.stylefeng.guns.modular.demo.mapper.CarMapper;
 import cn.stylefeng.guns.modular.demo.model.Enum.CarExceptionEnum;
+import cn.stylefeng.guns.modular.demo.model.Enum.DelFlagEnum;
 import cn.stylefeng.guns.modular.demo.model.in.CarRequest;
 import cn.stylefeng.guns.modular.demo.service.CarService;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
@@ -37,6 +38,7 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
                 wrapper ->
                         wrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName())
                                 .eq(ObjectUtil.isNotEmpty(carRequest.getCarColor()), CarEntity::getCarColor, carRequest.getCarColor())
+                                .ne(CarEntity::getDelFlag, DelFlagEnum.Y.getCode())
         );
         return this.list(queryWrapper);
     }
@@ -70,8 +72,9 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
     @Transactional(rollbackFor = Exception.class)
     public boolean del(CarRequest carRequest) {
         CarEntity carEntity = this.queryCar(carRequest);
-        boolean delFlag = this.removeById(carEntity.getCarId());
-        return delFlag;
+//        boolean delFlag = this.removeById(carEntity.getCarId());
+        carEntity.setDelFlag(DelFlagEnum.Y.getCode());
+        return this.updateById(carEntity);
     }
 
     @Override
@@ -106,7 +109,13 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
 
     private LambdaQueryWrapper<CarEntity> queryList(CarRequest carRequest){
         LambdaQueryWrapper<CarEntity> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName());
+//        queryWrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName());
+        queryWrapper.and(
+                wrapper ->
+                        wrapper.like(ObjectUtil.isNotEmpty(carRequest.getCarName()), CarEntity::getCarName, carRequest.getCarName())
+                                .eq(ObjectUtil.isNotEmpty(carRequest.getCarColor()), CarEntity::getCarColor, carRequest.getCarColor())
+                                .ne(CarEntity::getDelFlag, DelFlagEnum.Y.getCode())
+        );
         queryWrapper.orderByDesc(CarEntity::getCarName);
         return queryWrapper;
     }

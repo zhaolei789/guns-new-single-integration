@@ -32,10 +32,9 @@ public class CarManuRequest extends BaseRequest {
     /**
      * 车辆颜色
      */
-    @NotBlank(message = "厂商所属颜色不能为空！", groups = {BaseRequest.add.class, BaseRequest.edit.class})
+    @NotBlank(message = "厂商所属国家不能为空！", groups = {BaseRequest.add.class, BaseRequest.edit.class})
     private String manuCountry;
 
-    @NotNull(message = "状态不能为空", groups = {add.class, edit.class})
     @ChineseDescription("状态")
     private Integer statusFlag;
 

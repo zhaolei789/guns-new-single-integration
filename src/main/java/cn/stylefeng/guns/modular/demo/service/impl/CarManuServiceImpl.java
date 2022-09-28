@@ -8,6 +8,7 @@ import cn.stylefeng.guns.modular.demo.entity.CarManuEntity;
 import cn.stylefeng.guns.modular.demo.mapper.CarManuMapper;
 import cn.stylefeng.guns.modular.demo.model.Enum.CarExceptionEnum;
 import cn.stylefeng.guns.modular.demo.model.in.CarManuRequest;
+import cn.stylefeng.guns.modular.demo.model.out.CarManuResponse;
 import cn.stylefeng.guns.modular.demo.service.CarManuService;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
@@ -21,12 +22,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity> implements CarManuService {
 
+    @Resource
+    private CarManuMapper carManuMapper;
 
     private LambdaQueryWrapper<CarManuEntity> queryList(CarManuRequest carManuRequest){
         LambdaQueryWrapper<CarManuEntity> queryWrapper = new LambdaQueryWrapper<>();
@@ -51,10 +55,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
     }
 
     @Override
-    public PageResult<CarManuEntity> findListByPage(CarManuRequest carManuRequest) {
-        Page<CarManuEntity> page = this.page(PageFactory.defaultPage(), this.queryList(carManuRequest));
-        PageResult<CarManuEntity> pageResult = PageResultFactory.createPageResult(page);
-        return pageResult;
+    public PageResult<CarManuResponse> findListByPage(CarManuRequest carManuRequest) {
+//        Page<CarManuEntity> page = this.page(PageFactory.defaultPage(), this.queryList(carManuRequest));
+        Page<CarManuResponse> listByPage = this.baseMapper.findListByPage(PageFactory.defaultPage(), carManuRequest);
+//        PageResult<CarManuEntity> pageResult = PageResultFactory.createPageResult(page);
+        return PageResultFactory.createPageResult(listByPage);
     }
 
     @Override
@@ -102,6 +107,7 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
     @Override
     public void editStat(CarManuRequest carManuRequest) {
         Integer statusFlag = carManuRequest.getStatusFlag();
+        System.out.println(carManuRequest.getManuId());
         CarManuEntity carManu = this.query(carManuRequest);
         Long manuId = carManu.getManuId();
         LambdaUpdateWrapper<CarManuEntity> updateWrapper = new LambdaUpdateWrapper();
@@ -113,5 +119,16 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
             log.error(CarExceptionEnum.UPDATE_STATUS_ERROR.getUserTip());
             throw new SystemModularException(CarExceptionEnum.UPDATE_STATUS_ERROR);
         }
+    }
+
+    @Override
+    public CarManuResponse detail(CarManuRequest carManuRequest) {
+        Long manuId = carManuRequest.getManuId();
+        CarManuResponse carDetail = ((CarManuMapper)this.baseMapper).detail(manuId);
+//        CarManuResponse detail = carManuMapper.detail(manuId);
+        if (BeanUtil.isEmpty(carDetail)){
+            throw new BusinessException(CarExceptionEnum.MANU_NOT_EXISTED);
+        }
+        return carDetail;
     }
 }
