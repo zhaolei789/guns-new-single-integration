@@ -17,8 +17,6 @@ import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.gettyio.core.util.StringUtil;
-import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
@@ -27,6 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 @Service
 public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements CarService {
+    /**
+     * 车辆管理-所有车辆列表
+     * @param carRequest
+     * @return
+     */
     @Override
     public List<CarEntity> findCarList(CarRequest carRequest) {
         LambdaQueryWrapper<CarEntity> queryWrapper = this.queryList(carRequest);
@@ -43,6 +46,11 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         return this.list(queryWrapper);
     }
 
+    /**
+     * 车辆管理-分页查询
+     * @param carRequest
+     * @return
+     */
     @Override
     public PageResult<CarEntity> findListByPage(CarRequest carRequest) {
         LambdaQueryWrapper<CarEntity> queryWrapper = new LambdaQueryWrapper<>();
@@ -52,6 +60,11 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         return pageResult;
     }
 
+    /**
+     * 车辆管理-新增
+     * @param carRequest
+     * @return
+     */
     @Override
     public boolean add(CarRequest carRequest) {
         CarEntity carEntity = new CarEntity();
@@ -61,6 +74,10 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         return true;
     }
 
+    /**
+     * 车辆管理-修改
+     * @param carRequest
+     */
     @Override
     public void edit(CarRequest carRequest) {
         CarEntity carEntity = this.queryCar(carRequest);
@@ -68,6 +85,11 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         this.updateById(carEntity);
     }
 
+    /**
+     * 车辆管理-删除
+     * @param carRequest
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean del(CarRequest carRequest) {
@@ -77,6 +99,10 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         return this.updateById(carEntity);
     }
 
+    /**
+     * 车辆管理-批量删除
+     * @param carRequest
+     */
     @Override
     public void batchDelete(CarRequest carRequest) {
         List<Long> carIds = carRequest.getCarIds();
@@ -90,6 +116,11 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, CarEntity> implements
         }
     }
 
+    /**
+     * 车辆详情
+     * @param carRequest
+     * @return
+     */
     @Override
     public CarEntity carDetail(CarRequest carRequest) {
         CarEntity car = this.getById(carRequest.getCarId());

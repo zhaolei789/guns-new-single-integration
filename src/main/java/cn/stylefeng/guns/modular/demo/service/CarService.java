@@ -36,9 +36,23 @@ public interface CarService extends IService<CarEntity> {
      */
     void edit(CarRequest carRequest);
 
+    /**
+     * 车辆管理-删除
+     * @param carRequest
+     * @return
+     */
     boolean del(CarRequest carRequest);
 
+    /**
+     * 车辆管理-批量删除
+     * @param carRequest
+     */
     void batchDelete(CarRequest carRequest);
 
+    /**
+     * 车辆详情
+     * @param carRequest
+     * @return
+     */
     CarEntity carDetail(CarRequest carRequest);
 }

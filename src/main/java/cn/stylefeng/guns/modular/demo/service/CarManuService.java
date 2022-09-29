@@ -4,7 +4,6 @@ import cn.stylefeng.guns.modular.demo.entity.CarManuEntity;
 import cn.stylefeng.guns.modular.demo.model.in.CarManuRequest;
 import cn.stylefeng.guns.modular.demo.model.out.CarManuResponse;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -38,14 +37,32 @@ public interface CarManuService extends IService<CarManuEntity> {
      */
     void edit(CarManuRequest carManuRequest);
 
+    /**
+     * 车辆厂家管理-删除
+     * @param carManuRequest
+     * @return
+     */
     boolean del(CarManuRequest carManuRequest);
 
+    /**
+     * 批量删除车辆厂商信息
+     * @param carManuRequest
+     * @return
+     */
     void batchDelete(CarManuRequest carManuRequest);
 
-    CarManuEntity carDetail(CarManuRequest carManuRequest);
-
+    /**
+     * 更改厂商状态
+     * @param carManuRequest
+     * @return
+     */
     void editStat(CarManuRequest carManuRequest);
 
+    /**
+     * 详情
+     * @param carManuRequest
+     * @return
+     */
     CarManuResponse detail(CarManuRequest carManuRequest);
 
 }

@@ -14,7 +14,6 @@ import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
-import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,15 +21,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity> implements CarManuService {
 
-    @Resource
-    private CarManuMapper carManuMapper;
 
     private LambdaQueryWrapper<CarManuEntity> queryList(CarManuRequest carManuRequest){
         LambdaQueryWrapper<CarManuEntity> queryWrapper = new LambdaQueryWrapper<>();
@@ -48,12 +44,22 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
         return carManuEntity;
     }
 
+    /**
+     * 车辆管理-所有车辆列表
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public List<CarManuEntity> findCarList(CarManuRequest carManuRequest) {
         LambdaQueryWrapper<CarManuEntity> queryWrapper = this.queryList(carManuRequest);
         return this.list(queryWrapper);
     }
 
+    /**
+     * 车辆管理-分页查询
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public PageResult<CarManuResponse> findListByPage(CarManuRequest carManuRequest) {
 //        Page<CarManuEntity> page = this.page(PageFactory.defaultPage(), this.queryList(carManuRequest));
@@ -62,6 +68,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
         return PageResultFactory.createPageResult(listByPage);
     }
 
+    /**
+     * 车辆管理-新增
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public void add(CarManuRequest carManuRequest) {
         CarManuEntity carManuEntity = new CarManuEntity();
@@ -70,6 +81,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
         this.save(carManuEntity);
     }
 
+    /**
+     * 车辆管理-修改
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public void edit(CarManuRequest carManuRequest) {
         CarManuEntity carManuEntity = this.query(carManuRequest);
@@ -77,6 +93,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
         this.updateById(carManuEntity);
     }
 
+    /**
+     * 车辆管理-删除
+     * @param carManuRequest
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean del(CarManuRequest carManuRequest) {
@@ -86,6 +107,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
         return removeFlag;
     }
 
+    /**
+     * 车辆管理-批量删除
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public void batchDelete(CarManuRequest carManuRequest) {
         List<Long> manuIds = carManuRequest.getManuIds();
@@ -99,11 +125,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
 
     }
 
-    @Override
-    public CarManuEntity carDetail(CarManuRequest carManuRequest) {
-        return null;
-    }
-
+    /**
+     * 车辆管理-更改状态
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public void editStat(CarManuRequest carManuRequest) {
         Integer statusFlag = carManuRequest.getStatusFlag();
@@ -121,6 +147,11 @@ public class CarManuServiceImpl extends ServiceImpl<CarManuMapper, CarManuEntity
         }
     }
 
+    /**
+     * 车辆管理-详情
+     * @param carManuRequest
+     * @return
+     */
     @Override
     public CarManuResponse detail(CarManuRequest carManuRequest) {
         Long manuId = carManuRequest.getManuId();
