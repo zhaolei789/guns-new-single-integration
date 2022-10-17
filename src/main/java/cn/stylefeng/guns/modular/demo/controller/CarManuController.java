@@ -1,6 +1,11 @@
 package cn.stylefeng.guns.modular.demo.controller;
 
+import cn.stylefeng.guns.core.exception.BusinessException;
+import cn.stylefeng.guns.modular.demo.model.Enum.CarExceptionEnum;
+import cn.stylefeng.guns.modular.demo.model.Enum.FileEnum;
 import cn.stylefeng.guns.modular.demo.model.in.CarManuRequest;
+import cn.stylefeng.roses.kernel.file.api.exception.FileException;
+import org.springframework.ui.Model;
 import cn.stylefeng.guns.modular.demo.model.out.CarManuResponse;
 import cn.stylefeng.guns.modular.demo.service.CarManuService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
@@ -13,9 +18,16 @@ import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import oshi.driver.mac.net.NetStat;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @ApiResource(name = "车辆管理")
@@ -128,5 +140,49 @@ public class CarManuController {
     public ResponseData<?> detail(@RequestBody CarManuRequest carManuRequest){
         CarManuResponse detail = this.carManuService.detail(carManuRequest);
         return new SuccessResponseData<>(detail);
+    }
+
+    @PostResource(
+            name = "图片上传",
+            path = {"/manu/file/uplode"}
+    )
+    public ResponseData<?> uplode(@RequestParam(value = "file") MultipartFile file, Model model, HttpServletRequest request){
+//        if (file.isEmpty()) {
+//            System.out.println("文件为空空");
+//        }
+//        String fileName = file.getOriginalFilename();  // 文件名
+//        String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
+//        String filePath = "D://temp-rainy//"; // 上传后的路径
+//        fileName = UUID.randomUUID() + suffixName; // 新文件名
+//        File dest = new File(filePath + fileName);
+//        if (!dest.getParentFile().exists()) {
+//            dest.getParentFile().mkdirs();
+//        }
+//        try {
+//            file.transferTo(dest);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String filename = "/temp-rainy/" + fileName;
+//        model.addAttribute("filename", filename);
+//        return "file";
+        if (file.isEmpty()){
+            throw new BusinessException(CarExceptionEnum.FILE_NOT_EXISTED);
+        }
+        String filename = file.getOriginalFilename();
+        String suffixName = filename.substring(filename.lastIndexOf("."));
+        String filePath = "E://temp-rainy//";
+        filename = UUID.randomUUID() + suffixName;
+        File dest = new File(filePath + filename);
+        if (!dest.getParentFile().exists()){
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            file.transferTo(dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new SuccessResponseData<>(file);
     }
 }

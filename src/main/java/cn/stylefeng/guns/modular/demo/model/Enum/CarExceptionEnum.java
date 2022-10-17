@@ -9,7 +9,9 @@ import lombok.Getter;
 public enum CarExceptionEnum implements AbstractExceptionEnum {
     CAR_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + ProjectConstants.BUSINESS_EXCEPTION_STEP_CODE + "01", "车辆不存在"),
     MANU_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + ProjectConstants.BUSINESS_EXCEPTION_STEP_CODE + "02", "厂家不存在"),
-    UPDATE_STATUS_ERROR("00", "更新厂商状态错误");
+    UPDATE_STATUS_ERROR("00", "更新厂商状态错误"),
+
+    FILE_NOT_EXISTED("01", "文件为空");
     private final String errorCode;
     private final String userTip;
 

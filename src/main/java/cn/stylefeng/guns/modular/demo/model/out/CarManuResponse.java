@@ -23,4 +23,6 @@ public class CarManuResponse {
 
     @ChineseDescription("数量")
     private Integer num;
+
+    private String filePath;
 }

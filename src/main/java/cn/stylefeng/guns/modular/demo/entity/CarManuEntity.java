@@ -47,4 +47,7 @@ public class CarManuEntity extends BaseEntity {
      */
     @TableField("status_flag")
     private Integer statusFlag;
+
+    @TableField("file_path")
+    private String filePath;
 }
