@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.demo.service;
 
 import cn.stylefeng.guns.modular.demo.model.in.NewsReq;
+import cn.stylefeng.guns.modular.demo.model.out.NewsRep;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import cn.stylefeng.guns.modular.demo.entity.News;
@@ -20,6 +21,8 @@ public interface NewsService extends IService<News> {
     void edit(NewsReq newsReq);
 
     void batchDel(NewsReq newsReq);
+
+    News newsDetail(NewsReq newsReq);
 
 }
 

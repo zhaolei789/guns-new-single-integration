@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.demo.mapper.NewsFileInfoMapper">
+
+    <resultMap type="cn.stylefeng.guns.modular.demo.entity.NewsFileInfo" id="NewsFileInfoMap">
+        <result property="fileId" column="file_id" jdbcType="INTEGER"/>
+        <result property="fileCode" column="file_code" jdbcType="INTEGER"/>
+        <result property="fileVersion" column="file_version" jdbcType="INTEGER"/>
+        <result property="fileStatus" column="file_status" jdbcType="VARCHAR"/>
+        <result property="fileLocation" column="file_location" jdbcType="INTEGER"/>
+        <result property="fileBucket" column="file_bucket" jdbcType="VARCHAR"/>
+        <result property="fileOriginName" column="file_origin_name" jdbcType="VARCHAR"/>
+        <result property="fileSuffix" column="file_suffix" jdbcType="VARCHAR"/>
+        <result property="fileSizeKb" column="file_size_kb" jdbcType="INTEGER"/>
+        <result property="fileSizeInfo" column="file_size_info" jdbcType="VARCHAR"/>
+        <result property="fileObjectName" column="file_object_name" jdbcType="VARCHAR"/>
+        <result property="filePath" column="file_path" jdbcType="VARCHAR"/>
+        <result property="secretFlag" column="secret_flag" jdbcType="VARCHAR"/>
+        <result property="delFlag" column="del_flag" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NewsFileInfoMap">
+        select
+          file_id, file_code, file_version, file_status, file_location, file_bucket, file_origin_name, file_suffix, file_size_kb, file_size_info, file_object_name, file_path, secret_flag, del_flag, create_time, create_user, update_time, update_user
+        from news_file_info
+        where file_id = #{fileId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NewsFileInfoMap">
+        select
+          file_id, file_code, file_version, file_status, file_location, file_bucket, file_origin_name, file_suffix, file_size_kb, file_size_info, file_object_name, file_path, secret_flag, del_flag, create_time, create_user, update_time, update_user
+        from news_file_info
+        <where>
+            <if test="fileId != null">
+                and file_id = #{fileId}
+            </if>
+            <if test="fileCode != null">
+                and file_code = #{fileCode}
+            </if>
+            <if test="fileVersion != null">
+                and file_version = #{fileVersion}
+            </if>
+            <if test="fileStatus != null and fileStatus != ''">
+                and file_status = #{fileStatus}
+            </if>
+            <if test="fileLocation != null">
+                and file_location = #{fileLocation}
+            </if>
+            <if test="fileBucket != null and fileBucket != ''">
+                and file_bucket = #{fileBucket}
+            </if>
+            <if test="fileOriginName != null and fileOriginName != ''">
+                and file_origin_name = #{fileOriginName}
+            </if>
+            <if test="fileSuffix != null and fileSuffix != ''">
+                and file_suffix = #{fileSuffix}
+            </if>
+            <if test="fileSizeKb != null">
+                and file_size_kb = #{fileSizeKb}
+            </if>
+            <if test="fileSizeInfo != null and fileSizeInfo != ''">
+                and file_size_info = #{fileSizeInfo}
+            </if>
+            <if test="fileObjectName != null and fileObjectName != ''">
+                and file_object_name = #{fileObjectName}
+            </if>
+            <if test="filePath != null and filePath != ''">
+                and file_path = #{filePath}
+            </if>
+            <if test="secretFlag != null and secretFlag != ''">
+                and secret_flag = #{secretFlag}
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and del_flag = #{delFlag}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="createUser != null">
+                and create_user = #{createUser}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="updateUser != null">
+                and update_user = #{updateUser}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from news_file_info
+        <where>
+            <if test="fileId != null">
+                and file_id = #{fileId}
+            </if>
+            <if test="fileCode != null">
+                and file_code = #{fileCode}
+            </if>
+            <if test="fileVersion != null">
+                and file_version = #{fileVersion}
+            </if>
+            <if test="fileStatus != null and fileStatus != ''">
+                and file_status = #{fileStatus}
+            </if>
+            <if test="fileLocation != null">
+                and file_location = #{fileLocation}
+            </if>
+            <if test="fileBucket != null and fileBucket != ''">
+                and file_bucket = #{fileBucket}
+            </if>
+            <if test="fileOriginName != null and fileOriginName != ''">
+                and file_origin_name = #{fileOriginName}
+            </if>
+            <if test="fileSuffix != null and fileSuffix != ''">
+                and file_suffix = #{fileSuffix}
+            </if>
+            <if test="fileSizeKb != null">
+                and file_size_kb = #{fileSizeKb}
+            </if>
+            <if test="fileSizeInfo != null and fileSizeInfo != ''">
+                and file_size_info = #{fileSizeInfo}
+            </if>
+            <if test="fileObjectName != null and fileObjectName != ''">
+                and file_object_name = #{fileObjectName}
+            </if>
+            <if test="filePath != null and filePath != ''">
+                and file_path = #{filePath}
+            </if>
+            <if test="secretFlag != null and secretFlag != ''">
+                and secret_flag = #{secretFlag}
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and del_flag = #{delFlag}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="createUser != null">
+                and create_user = #{createUser}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="updateUser != null">
+                and update_user = #{updateUser}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fileId" useGeneratedKeys="true">
+        insert into news_file_info(file_code, file_version, file_status, file_location, file_bucket, file_origin_name, file_suffix, file_size_kb, file_size_info, file_object_name, file_path, secret_flag, del_flag, create_time, create_user, update_time, update_user)
+        values (#{fileCode}, #{fileVersion}, #{fileStatus}, #{fileLocation}, #{fileBucket}, #{fileOriginName}, #{fileSuffix}, #{fileSizeKb}, #{fileSizeInfo}, #{fileObjectName}, #{filePath}, #{secretFlag}, #{delFlag}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="fileId" useGeneratedKeys="true">
+        insert into news_file_info(file_code, file_version, file_status, file_location, file_bucket, file_origin_name, file_suffix, file_size_kb, file_size_info, file_object_name, file_path, secret_flag, del_flag, create_time, create_user, update_time, update_user)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.fileCode}, #{entity.fileVersion}, #{entity.fileStatus}, #{entity.fileLocation}, #{entity.fileBucket}, #{entity.fileOriginName}, #{entity.fileSuffix}, #{entity.fileSizeKb}, #{entity.fileSizeInfo}, #{entity.fileObjectName}, #{entity.filePath}, #{entity.secretFlag}, #{entity.delFlag}, #{entity.createTime}, #{entity.createUser}, #{entity.updateTime}, #{entity.updateUser})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="fileId" useGeneratedKeys="true">
+        insert into news_file_info(file_code, file_version, file_status, file_location, file_bucket, file_origin_name, file_suffix, file_size_kb, file_size_info, file_object_name, file_path, secret_flag, del_flag, create_time, create_user, update_time, update_user)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.fileCode}, #{entity.fileVersion}, #{entity.fileStatus}, #{entity.fileLocation}, #{entity.fileBucket}, #{entity.fileOriginName}, #{entity.fileSuffix}, #{entity.fileSizeKb}, #{entity.fileSizeInfo}, #{entity.fileObjectName}, #{entity.filePath}, #{entity.secretFlag}, #{entity.delFlag}, #{entity.createTime}, #{entity.createUser}, #{entity.updateTime}, #{entity.updateUser})
+        </foreach>
+        on duplicate key update
+        file_code = values(file_code),
+        file_version = values(file_version),
+        file_status = values(file_status),
+        file_location = values(file_location),
+        file_bucket = values(file_bucket),
+        file_origin_name = values(file_origin_name),
+        file_suffix = values(file_suffix),
+        file_size_kb = values(file_size_kb),
+        file_size_info = values(file_size_info),
+        file_object_name = values(file_object_name),
+        file_path = values(file_path),
+        secret_flag = values(secret_flag),
+        del_flag = values(del_flag),
+        create_time = values(create_time),
+        create_user = values(create_user),
+        update_time = values(update_time),
+        update_user = values(update_user)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update news_file_info
+        <set>
+            <if test="fileCode != null">
+                file_code = #{fileCode},
+            </if>
+            <if test="fileVersion != null">
+                file_version = #{fileVersion},
+            </if>
+            <if test="fileStatus != null and fileStatus != ''">
+                file_status = #{fileStatus},
+            </if>
+            <if test="fileLocation != null">
+                file_location = #{fileLocation},
+            </if>
+            <if test="fileBucket != null and fileBucket != ''">
+                file_bucket = #{fileBucket},
+            </if>
+            <if test="fileOriginName != null and fileOriginName != ''">
+                file_origin_name = #{fileOriginName},
+            </if>
+            <if test="fileSuffix != null and fileSuffix != ''">
+                file_suffix = #{fileSuffix},
+            </if>
+            <if test="fileSizeKb != null">
+                file_size_kb = #{fileSizeKb},
+            </if>
+            <if test="fileSizeInfo != null and fileSizeInfo != ''">
+                file_size_info = #{fileSizeInfo},
+            </if>
+            <if test="fileObjectName != null and fileObjectName != ''">
+                file_object_name = #{fileObjectName},
+            </if>
+            <if test="filePath != null and filePath != ''">
+                file_path = #{filePath},
+            </if>
+            <if test="secretFlag != null and secretFlag != ''">
+                secret_flag = #{secretFlag},
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                del_flag = #{delFlag},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+        </set>
+        where file_id = #{fileId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from news_file_info where file_id = #{fileId}
+    </delete>
+
+    <!--文件列表sql-->
+    <sql id="file_list_mysql">
+        SELECT fileinfo.file_id        AS fileId,
+        fileinfo.file_code         AS fileCode,
+        fileinfo.secret_flag       AS secretFlag,
+        fileinfo.file_bucket       AS fileBucket,
+        fileinfo.file_object_name  AS fileObjectName,
+        fileinfo.file_location     AS fileLocation,
+        fileinfo.file_origin_name  AS fileOriginName,
+        fileinfo.file_suffix       AS fileSuffix,
+        fileinfo.file_size_info    AS fileSizeInfo,
+        fileinfo.file_version      AS fileVersion,
+        suser.real_name            AS createUserName,
+        fileinfo.create_time       AS createTime,
+        fileinfo.del_flag          AS delFlag
+        FROM news_file_info fileinfo
+        LEFT JOIN sys_user suser ON suser.user_id = fileinfo.create_user
+        <where>
+            <if test="newsFileInfoReq.fileOriginName != null and newsFileInfoReq.fileOriginName != '' ">
+                AND fileinfo.file_origin_name LIKE CONCAT('%', #{newsFileInfoReq.fileOriginName}, '%')
+            </if>
+            <if test="newsFileInfoReq.fileLocation != null and newsFileInfoReq.fileLocation != '' ">
+                AND fileinfo.file_location = #{newsFileInfoReq.fileLocation}
+            </if>
+        </where>
+    </sql>
+
+    <select id="findInfoList" resultType="cn.stylefeng.guns.modular.demo.model.out.NewsFileInfoRep">
+        <include refid="file_list_mysql"></include>
+    </select>
+
+</mapper>
+

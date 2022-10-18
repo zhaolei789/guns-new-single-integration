@@ -5,6 +5,7 @@ import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,6 +33,7 @@ public class NewsReq extends BaseEntity implements Serializable {
     //紧急程度
     private Integer newsCode;
     //完成时间
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date doneTime;
     //删除标识
     private String delFlag;
